@@ -36,7 +36,34 @@ jobs:
 
       - name: Extract DayMate project
         run: unzip -o DayMate_Android_Project.zip
-
+      
+      - name: Fix Java and Kotlin targets
+        run: |
+          cat > DayMate/app/build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application'
+              id 'org.jetbrains.kotlin.android'
+          }
+          android {
+              namespace 'com.daymate.app'
+              compileSdk 35
+              defaultConfig {
+                  applicationId 'com.daymate.app'
+                  minSdk 26
+                  targetSdk 35
+                  versionCode 1
+                  versionName '1.0'
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+              kotlinOptions {
+                  jvmTarget = '17'
+              }
+          }
+          EOF
+          
       - name: Build debug APK
         working-directory: DayMate
         run: gradle assembleDebug
