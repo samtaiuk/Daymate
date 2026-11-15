@@ -6,6 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: unzip -q DayMate.zip
+      - run: printf "android.useAndroidX=true\norg.gradle.jvmargs=-Xmx2g\n" > DayMate/gradle.properties
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
